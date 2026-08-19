@@ -58,13 +58,13 @@ Plain Game Box 是一个基于 C++ 和 Windows 控制台的小游戏合集，提
 编译主游戏：
 
 ```bat
-cl /std:c++17 /EHsc PlainGameBox.cpp /Fe:PlainGameBox.exe
+cl /std:c++17 /EHsc /utf-8 PlainGameBox.cpp /Fe:PlainGameBox.exe
 ```
 
 编译历史文件工具：
 
 ```bat
-cl /std:c++17 /EHsc FilePusher.cpp /Fe:FilePusher.exe
+cl /std:c++17 /EHsc /utf-8 FilePusher.cpp /Fe:FilePusher.exe
 ```
 
 ### 使用 MinGW-w64

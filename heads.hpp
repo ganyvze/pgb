@@ -33,4 +33,11 @@ using std::array;
 using LL = long long;
 using UL = unsigned long long;
 
+inline void init_console_encoding() {
+#ifdef _WIN32
+	SetConsoleOutputCP(CP_UTF8);
+	SetConsoleCP(CP_UTF8);
+#endif
+}
+
 #endif

@@ -77,6 +77,7 @@ void CheckName(string& fn) {
 	}
 }
 int main() {
+	init_console_encoding();
 	puts("欢迎使用文件推送器。 ");
 	printf("请输入历史文件名: ");
 	string s; getlstr(s);
