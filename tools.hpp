@@ -22,7 +22,7 @@ LL get() {
     bool iserror = 0, islong;
     LL ans, ign;
     do {
-    	if(iserror) printf("无效数字。\n请输入有效数字: ");
+	    if(iserror) put("无效数字。\n请输入有效数字: ");
     	iserror = 0, islong = 0, ans = 0;
     	getstr(s);
     	if(s == "/hub") {
@@ -40,7 +40,7 @@ LL get() {
 		}
 	    if(s.size() > to_string(LONG_LONG_MAX).size()) {
 	    	islong = 1;
-	    	printf("数字过大。\n请输入更小的数字: ");
+	    put("数字过大。\n请输入更小的数字: ");
 	    	continue;
 		}
 		sscanf(s.c_str(), "%lld", &ans);
@@ -52,7 +52,7 @@ double getf() {
     bool iserror = 0, islong;
     double ans, ign;
     do {
-    	if(iserror) printf("无效数字。\n请输入有效数字: ");
+	    if(iserror) put("无效数字。\n请输入有效数字: ");
     	iserror = 0, islong = 0, ans = 0;
     	getstr(s);
     	if(s == "/hub") {
@@ -70,7 +70,7 @@ double getf() {
 		}
 	    if(s.size() > to_string(LONG_LONG_MAX).size()) {
 	    	islong = 1;
-	    	printf("数字过大。\n请输入更小的数字: ");
+	    put("数字过大。\n请输入更小的数字: ");
 	    	continue;
 		}
 		sscanf(s.c_str(), "%lf", &ans);

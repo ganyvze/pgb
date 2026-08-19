@@ -40,7 +40,7 @@ namespace PGB {
 	bool saveHistory() {
 	    allre:ofstream fout(nowfilename, ios::binary);
 	    if(!fout) {
-	        printf("保存失败。\n重试(Y/N): ");
+	        put("保存失败。\n重试(Y/N): ");
 	        re:char c = getch();
 	        if(c == 'y' || c == 'Y') goto allre;
 	        if(c != 'n' && c != 'N') goto re;
@@ -98,21 +98,21 @@ namespace PGB {
 
 namespace PGB {
 	void printtitle() {
-		chco(""), printf("===== ");
-		chco("green"), printf("Plain ");
-		chco("red"), printf("Game ");
-		chco("Lblue"), printf("Box");
-		chco(""), printf(" =====\n");
-		chco("blue"), printf("Blue");
-		chco("red"), printf("Carrot ");
-		chco("yellow"), printf("studio\n\n");
+		chco(""), put("===== ");
+		chco("green"), put("Plain ");
+		chco("red"), put("Game ");
+		chco("Lblue"), put("Box");
+		chco(""), put(" =====\n");
+		chco("blue"), put("Blue");
+		chco("red"), put("Carrot ");
+		chco("yellow"), put("studio\n\n");
 		chco("");
 	}
 	void printMaceGambit() {
 		chco("purple");
-		printf("%s\n", MaceGambit::CustomName.c_str());
+		putf("%s\n", MaceGambit::CustomName.c_str());
 		chco("gray");
-		printf("%s\n\n", MaceGambit::MCName.c_str());
+		putf("%s\n\n", MaceGambit::MCName.c_str());
 		for(char c : MaceGambit::Icon) {
 			switch(c) {
 				case '#': chco("gray"); break;
@@ -124,16 +124,16 @@ namespace PGB {
 				case '=': chco(""); break;
 				default: chco("");
 			}
-			printf("%c", c);
+			putf("%c", c);
 		}
-		printf("\n");
+		put("\n");
 		for(char c : MaceGambit::Enchantments) {
 			if(c == 'I' || c == 'V') chco("purple");
 			else chco("");
-			printf("%c", c);
+			putf("%c", c);
 		}
 		chco("");
-		printf("\n\n按回车返回主菜单...");
+		put("\n\n按回车返回主菜单...");
 		pause();
 	}
 	bool GameRes_cmp(const GameRes& x, const GameRes& y) {
@@ -144,11 +144,11 @@ namespace PGB {
 	}
 	void CheckHistory() {
 		re:if(History.empty()) {
-			printf("未找到游戏记录。\n按回车返回主菜单...");
+				put("未找到游戏记录。\n按回车返回主菜单...");
 			pause();
 			return ;
 		}
-		printf("编号 | 游戏                         |  分数   |  时长  | 标签\n");
+		put("编号 | 游戏                         |  分数   |  时长  | 标签\n");
 		for(UL i = 0; i < History.size(); i ++) {
 			string GameName;
 			GameRes nd = History[i];
@@ -164,20 +164,20 @@ namespace PGB {
 			   default: GameName = "未知游戏                 "; break;
 			}
 			if(GameName.empty()) continue;
-			printf("%6lld | %s | ", i + 1, GameName.c_str());
-			if(nd.score == score_noscore) printf("无分数 | ");
-			else printf("%8lld | ", nd.score);
-			if(nd.time != time_notime) printf("%5llds | ", nd.time);
-			else printf("       | ");
-			printf("%s\n", nd.tag.c_str());
+			putf("%6lld | %s | ", i + 1, GameName.c_str());
+			if(nd.score == score_noscore) put("无分数 | ");
+			else putf("%8lld | ", nd.score);
+			if(nd.time != time_notime) putf("%5llds | ", nd.time);
+			else put("       | ");
+			putf("%s\n", nd.tag.c_str());
 		}
-		printf("\n历史文件名: %s\n", nowfilename.c_str());
-		printf("添加标签: tag [历史编号] [标签]\n删除记录: del [历史编号]\n");
-		printf("删除多条记录: delbe [起始编号] [结束编号]\n");
-		printf("删除全部记录: delall\n重新加载数据: reload\n排序记录: sort\n");
-		printf("交换记录: swap [第一个编号] [第二个编号]\n"); 
-		printf("若需要复制记录，请使用 FilePusher。\n");
-		printf("菜单: /hub\n\n操作: ");
+		putf("\n历史文件名: %s\n", nowfilename.c_str());
+		put("添加标签: tag [历史编号] [标签]\n删除记录: del [历史编号]\n");
+		put("删除多条记录: delbe [起始编号] [结束编号]\n");
+		put("删除全部记录: delall\n重新加载数据: reload\n排序记录: sort\n");
+		put("交换记录: swap [第一个编号] [第二个编号]\n");
+		put("若需要复制记录，请使用 FilePusher。\n");
+		put("菜单: /hub\n\n操作: ");
 		string op; getstr(op);
 		if(op == "/hub") return ;
 		if(op == "tag") {
@@ -205,7 +205,7 @@ namespace PGB {
 			saveHistory();
 		} else if(op == "delall") {
 			system("cls");
-			printf("确定要删除全部历史记录吗(Y/N)?");
+			put("确定要删除全部历史记录吗(Y/N)?");
 			reinput:char in = getch();
 			if(in == 'y' || in == 'Y') History.clear();
 			else if(in == 'n' || in == 'N') goto qu;
@@ -223,23 +223,23 @@ namespace PGB {
 	void Settings() {
 		while(true) {
 			system("cls");
-			printf("设置:\n");
-			printf("1. 护眼模式（关闭颜色变化，屏幕输出更快） ["); chco(eye_protection ? "green" : "Lblue"); printf("%s", eye_protection ? "开启" : "关闭"); chco(""); printf("]\n");
-			printf("2. 设置随机种子 ["); if(randomSeed == -1) chco("Lblue"), printf("未设置"); else chco("green"), printf("当前种子: %lld", randomSeed); chco(""); printf("]\n");
-			printf("3. 测试模式（不保存游戏历史） ["); chco(testmode ? "green" : "Lblue"); printf("%s", testmode ? "开启" : "关闭"); chco(""); printf("]\n");
-			printf("4. 使用其他历史文件名 ["); chco(nowfilename == BKfilename ? "Lblue" : "green"); printf("%s", nowfilename == BKfilename ? "未修改" : ("当前文件名: " + nowfilename).c_str()); chco(""); printf("]\n");
-			printf("__________________\n菜单: /hub\n更改选项: ");
+			put("设置:\n");
+			put("1. 护眼模式（关闭颜色变化，屏幕输出更快） ["); chco(eye_protection ? "green" : "Lblue"); put(eye_protection ? "开启" : "关闭"); chco(""); put("]\n");
+			put("2. 设置随机种子 ["); if(randomSeed == -1) chco("Lblue"), put("未设置"); else chco("green"), putf("当前种子: %lld", randomSeed); chco(""); put("]\n");
+			put("3. 测试模式（不保存游戏历史） ["); chco(testmode ? "green" : "Lblue"); put(testmode ? "开启" : "关闭"); chco(""); put("]\n");
+			put("4. 使用其他历史文件名 ["); chco(nowfilename == BKfilename ? "Lblue" : "green"); put(nowfilename == BKfilename ? "未修改" : ("当前文件名: " + nowfilename)); chco(""); put("]\n");
+			put("__________________\n菜单: /hub\n更改选项: ");
 			string in;
 			getlstr(in);
 			if(in == "/hub") return ;
 			if(in.empty()) continue;
 			switch(in.front()) {
 				case '1': eye_protection ^= 1; break;
-				case '2': re1: system("cls"); printf("重置（输入 0 可重置）: ");
+				case '2': re1: system("cls"); put("重置（输入 0 可重置）: ");
 						  LL x; x = get(); if(Isout) return ;
 						  if(x < 0) goto re1; if(x == 0) setRandomSeed(); else setRandomSeed(x); break;
 				case '3': testmode ^= 1; break;
-				case '4': re2:system("cls"); printf("重置（留空即可重置）: ");
+				case '4': re2:system("cls"); put("重置（留空即可重置）: ");
 						  string s; getlstr(s); if(Isout) return ;
 						  if(s.empty()) nowfilename = BKfilename;
 						  else if(failfilename(s)) goto re2;
@@ -253,9 +253,9 @@ namespace PGB {
 		loadHistory();
 		while(true) {
 			printtitle();
-			printf("菜单\n\n1. 经典扫雷\n2. 钻石寻宝扫雷\n3. 井字棋\n");
-			printf("4. 陷阱迷宫\n5. 2048 游戏\n6. 打字游戏\n7. 滑块拼图\n8. 加法路径游戏\n");
-			printf("\nC. 查看历史记录\nS. 设置\nX. 退出\n____________\n选择: ");
+			put("菜单\n\n1. 经典扫雷\n2. 钻石寻宝扫雷\n3. 井字棋\n");
+			put("4. 陷阱迷宫\n5. 2048 游戏\n6. 打字游戏\n7. 滑块拼图\n8. 加法路径游戏\n");
+			put("\nC. 查看历史记录\nS. 设置\nX. 退出\n____________\n选择: ");
 			string s;
 			getlstr(s);
 			system("cls");
@@ -278,11 +278,11 @@ namespace PGB {
 				case 's': case 'S': Settings(); break;
 				case 'x': case 'X': return ;
 			} else if(s.find("gg") != string::npos) for(LL i = 1; i <= 1000; i ++) {
-				printf("支持 ");
+				put("支持 ");
 				chco("blue");
-				printf("Blue");
+				put("Blue");
 				chco("red");
-				printf("carrot ");
+				put("carrot ");
 				chco("");
 			}
 			system("cls");
