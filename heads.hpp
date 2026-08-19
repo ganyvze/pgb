@@ -8,6 +8,7 @@
 #include <map>
 #include <queue>
 #include <stack>
+#include <array>
 #include <algorithm> 
 #include <conio.h> 
 #include <Windows.h>

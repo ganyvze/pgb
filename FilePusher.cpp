@@ -11,7 +11,7 @@ namespace PGB {
 	bool saveHistory() {
 	    allre:ofstream fout(nowfilename, ios::binary);
 	    if(!fout) {
-	        printf("Failed to save file.\nTry again(Y or N): ");
+	        printf("保存失败。\n重试(Y/N): ");
 	        re:char c = getch();
 	        if(c == 'y' || c == 'Y') goto allre;
 	        if(c != 'n' && c != 'N') goto re;
@@ -53,14 +53,14 @@ namespace PGB {
 	void HPB(LL gamenum, LL score, LL time) { if(!testmode) History.push_back({gamenum, score, time, ""}), saveHistory(); }
 }
 void finish() {
-	puts("File push done.");
-	puts("Thanks for your using.\n");
-	printf("Press any key to close...");
+	puts("文件合并完成。");
+	puts("感谢使用。\n");
+	printf("按任意键关闭...");
 	pause();
 }
 void errorout() {
-	puts("Failed to find the file.");
-	puts("Please put the history files in the same place.");
+	puts("未找到该文件。");
+	puts("请将历史文件放在同一目录中。 ");
 	finish();
 	exit(0);
 }
@@ -71,14 +71,14 @@ void CheckName(string& fn) {
 		  fn.back() == '\t' ||
 		  fn.back() == '\r') fn.pop_back();
 	if(fn.substr(lst - 4, lst - 1) != ".bin") {
-		puts("History file should be ended with \".bin\".");
+		puts("历史文件名必须以 \".bin\" 结尾。");
 		finish();
 		exit(0);
 	}
 }
 int main() {
-	puts("Welcome to the file pusher.");
-	printf("Please enter your history file name: ");
+	puts("欢迎使用文件推送器。 ");
+	printf("请输入历史文件名: ");
 	string s; getlstr(s);
 	CheckName(s);
 	PGB::nowfilename = s;

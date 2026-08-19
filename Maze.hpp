@@ -166,17 +166,17 @@ namespace TrapMaze {
 		} else return false;
 	}
 	bool game() {
-		printf("Maze size: ");
+		printf("迷宫大小: ");
 		n = get();
 		while(n <= 8 && !Isout) {
-			printf("Number should be larger than 8.\n");
-			printf("Maze size: ");
+			printf("大小必须大于 8。\n");
+			printf("迷宫大小: ");
 			n = get();
 		}
 		if(Isout) return false;
 		string dif_;
 		re1:system("cls");
-		printf("Difficulties:\n\nA:Easy\nB:Normal\nC:Hard\n\nChoose a difficulty: ");
+		printf("难度：\n\nA: 简单\nB: 普通\nC: 困难\n\n请选择难度: ");
 		getlstr(dif_);
 		if(dif_ == "/hub") return false;
 		if(dif_.empty()) goto re1;
@@ -185,30 +185,30 @@ namespace TrapMaze {
 		dif = (diff == 'a' ? 0.12 : (diff == 'b' ? 0.20 : 0.30));
 		newtrytime = time(0);
 		system("cls");
-		printf("Creating map...\n");
+		printf("正在生成地图...\n");
 		do {
 			again = false, new_maze();
 			if(newtrytime + 20 < time(0)) {
-				printf("\nTook too long for creat map.\nPlease enter a smaller number next time.\n");
-				printf("\nPress enter to return to menu...");
+				printf("\n地图生成耗时过长。\n请下次输入更小的数字。\n");
+				printf("\n按回车返回主菜单...");
 				pause();
 				return false;
 			}
-			if(again) printf("[0%%]Try to creat map again...\n");
+			if(again) printf("[0%%]重新生成地图中...\n");
 		} while(again);
 		for(LL i = -1; i <= 1; i ++) for(LL j = -1; j <= 1; j ++) if(i || j) open[nx + i][ny + j] = 1;
 		LL starttime = nulltime, endtime = 0;
 		while(true) {
 			system("cls");
-			printf("Find the way to \"E\".\nHealth: %lld / %lld\n", health, maxhealth);
+			printf("找到出口 \"E\"。\n生命值: %lld / %lld\n", health, maxhealth);
 			printmaze();
-			printf("Move: W or I(up) S or K(down) A or J(left) D or L(right)\nMenu: [TAB]\n");
-			printf("Input: ");
+			printf("移动：W 或 I(上) S 或 K(下) A 或 J(左) D 或 L(右)\n菜单：[TAB]\n");
+			printf("输入: ");
 			in:char input = getch();
 			if(input == EOF) exit(-1);
 			if(input == '\t') {
 				system("cls");
-				printf("Are you sure you are going to quit(Y/N): ");
+				printf("确定要退出吗(Y/N): ");
 				reask:input = getch();
 				if(input == EOF) exit(-1);
 				if(input == 'y' || input == 'Y') return false;
@@ -221,7 +221,7 @@ namespace TrapMaze {
 				system("cls");
 				printmaze();
 				chco("green");
-				printf("You win!\nHealth: %lld", health);
+				printf("你赢了！\n生命值: %lld", health);
 				chco("");
 				break;
 			}
@@ -229,14 +229,14 @@ namespace TrapMaze {
 				endtime = time(0);
 				system("cls");
 				printmaze();
-				printf("Game over\nPress enter to return to menu...");
+				printf("游戏失败\n按回车返回主菜单...");
 				pause();
 				PGB::HPB(4, 0, endtime - starttime);
 				return false;
 			}
 			if(starttime == nulltime) starttime = time(0);
 		}
-		printf("\nPress enter to return to menu...");
+		printf("\n按回车返回主菜单...");
 		pause();
 		PGB::HPB(4, 100.0 * health / maxhealth, endtime - starttime);
 		return true;

@@ -55,7 +55,7 @@ namespace Tictactoe {
 	}
 	xandy getxy() {
 		chco("gray");
-		printf("Menu: /hub\n");
+		printf("菜单: /hub\n");
 		chco("purple");
 		printf("_______________\n");
 		chco("");
@@ -68,8 +68,8 @@ namespace Tictactoe {
 				again = true;
 				return {0, 0};
 			}
-			if(sscanf(input.c_str(), "%1lld%1lld", &x, &y) != 2 || x < 1 || x > 3 || y < 1 || y > 3) printf("error\nxy = "), x = y = 0;
-			else if(mp[y][x] != '-') printf("This place is used.\nxy = ");
+			if(sscanf(input.c_str(), "%1lld%1lld", &x, &y) != 2 || x < 1 || x > 3 || y < 1 || y > 3) printf("错误\nxy = "), x = y = 0;
+			else if(mp[y][x] != '-') printf("该位置已被占用。\nxy = ");
 			else break;
 		}
 		return {y, x};
@@ -178,7 +178,7 @@ namespace Tictactoe {
 	bool game() {
 		init();
 		string dif_, team;
-		re1:printf("Difficulties:\n\nA:Easy\nB:Normal\nC:Hard\n\nChoose a difficulty: ");
+		re1:printf("难度:\n\nA: 简单\nB: 普通\nC: 困难\n\n请选择难度: ");
 		getlstr(dif_);
 		if(dif_ == "/hub") return false;
 		if(dif_.empty()) goto re1;
@@ -186,7 +186,7 @@ namespace Tictactoe {
 		if(tolower(dif) != 'a' && tolower(dif) != 'b' && tolower(dif) != 'c') { system("cls"); goto re1; }
 		dif = tolower(dif);
 		re2:system("cls");
-		printf("Choose a character(X/O): ");
+		printf("请选择棋子(X/O): ");
 		getlstr(team);
 		if(team == "/hub") return false;
 		if(team.empty()) goto re2;
@@ -213,11 +213,11 @@ namespace Tictactoe {
 		system("cls");
 		printendboard();
 		char w = checkwin();
-		if(!w) printf("No winner.\n");
-		else if(w == player) chco("green"), printf("You win!\n");
-		else chco("red"), printf("Game over.\n");
+		if(!w) printf("平局。\n");
+		else if(w == player) chco("green"), printf("你赢了！\n");
+		else chco("red"), printf("游戏结束。\n");
 		chco("");
-		printf("Score: %lld\n\nPress enter to return to menu...", calcscore(w));
+		printf("分数: %lld\n\n按回车返回主菜单...", calcscore(w));
 		pause();
 		PGB::HPB(3, calcscore(w), endtime - starttime);
 		return w == player;

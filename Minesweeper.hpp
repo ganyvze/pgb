@@ -7,9 +7,9 @@ namespace Minesweeper {
 	struct xandy { LL x, y; char sign; };
 	xandy getxy(LL n, bool& again) {
 		chco("Lblue");
-		printf("Open: x.y\nFlag: x/y\nClear flag: x/y\n");
+		printf("打开: x.y\n标记: x/y\n取消标记: x/y\n");
 		chco("gray");
-		printf("Menu: /hub\n");
+		printf("菜单: /hub\n");
 		chco("purple");
 		printf("_______________\n");
 		chco("");
@@ -23,7 +23,7 @@ namespace Minesweeper {
 				again = true;
 				return {0, 0, 0};
 			}
-			if(!input.empty()) printf("Invalid number\nx?y = ");
+			if(!input.empty()) printf("无效输入\nx?y = ");
 			do getlstr(input); while(input.empty());
 			if(sscanf(input.c_str(), "%lld.%lld", &x, &y) == 2) sign = '.';
 			else if(sscanf(input.c_str(), "%lld/%lld", &x, &y) == 2) sign = '/';
@@ -130,14 +130,14 @@ namespace Minesweeper {
 		}
 	public:
 		bool game() {
-			printf("Board size: ");
+			printf("棋盘大小: ");
 			n = get();
-			while(n <= 3 && !Isout) printf("Number should larger than 3.\nBoard size: "), n = get();
+			while(n <= 3 && !Isout) printf("大小必须大于 3。\n棋盘大小: "), n = get();
 			if(Isout) return false;
 			init();
 			system("cls");
 			chco("blue");
-			printf("Bombs left: %lld\n", boommax);
+			printf("剩余雷数: %lld\n", boommax);
 			chco("");
 			printface(0);
 			printboard();
@@ -149,7 +149,7 @@ namespace Minesweeper {
 			while(!is_end()) {
 				system("cls");
 				chco("blue");
-				printf("Boom left: %lld\n", boommax - signcnt);
+				printf("剩余雷数: %lld\n", boommax - signcnt);
 				chco("");
 				printface(0);
 				printboard();
@@ -182,12 +182,12 @@ namespace Minesweeper {
 			chco("");
 			printf("\n");
 			endtime = time(0);
-			if(gameover) chco("red"), printf("Game over.\n");
-			else chco("green"), printf("You win!\n");
+			if(gameover) chco("red"), printf("游戏失败。\n");
+			else chco("green"), printf("你赢了！\n");
 			chco("");
 			LL opencnt = 0;
 			if(gameover) for(LL i = 1; i <= n; i ++) for(LL j = 1; j <= n; j ++) opencnt += ((oboa[i][j] == '+' && boa[i][j] == '+') || isdigit(oboa[i][j]));
-			printf("Time: %llds\nScore: %lld\n\nPress enter to return to menu...", endtime - starttime, gameover ? opencnt : (n * n));
+			printf("时间: %llds\n分数: %lld\n\n按回车返回主菜单...", endtime - starttime, gameover ? opencnt : (n * n));
 			pause();
 			PGB::HPB(1, gameover ? opencnt : (n * n), endtime - starttime);
 			return !gameover;
@@ -277,14 +277,14 @@ namespace Minesweeper {
 		}
 	public:
 		bool game() {
-			printf("Board size: ");
+			printf("棋盘大小: ");
 			n = get();
-			while(n <= 5 && !Isout) printf("Number should larger than 5.\nBoard size: "), n = get();
+			while(n <= 5 && !Isout) printf("大小必须大于 5。\n棋盘大小: "), n = get();
 			if(Isout) return false;
 			init();
 			system("cls");
 			chco("blue");
-			printf("Boom left: %lld\n", boommax);
+			printf("剩余雷数: %lld\n", boommax);
 			chco("");
 			printface(0);
 			printboard();
@@ -296,7 +296,7 @@ namespace Minesweeper {
 			while(oboa[tgx][tgy] != 'D' && !gameover) {
 				system("cls");
 				chco("blue");
-				printf("Boom left: %lld\n", boommax - signcnt);
+				printf("剩余雷数: %lld\n", boommax - signcnt);
 				chco("");
 				printface(0);
 				printboard();
@@ -329,12 +329,12 @@ namespace Minesweeper {
 			chco("");
 			printf("\n");
 			endtime = time(0);
-			if(gameover) chco("red"), printf("Game over.\n");
-			else chco("green"), printf("You win!\n");
+			if(gameover) chco("red"), printf("游戏失败。\n");
+			else chco("green"), printf("你赢了！\n");
 			chco("");
 			LL opencnt = 0;
 			if(gameover) for(LL i = 1; i <= n; i ++) for(LL j = 1; j <= n; j ++) opencnt += ((oboa[i][j] == '+' && boa[i][j] == '+') || isdigit(oboa[i][j]));
-			printf("Time: %llds\nScore: %lld\n\nPress enter to return to menu...", endtime - starttime, gameover ? opencnt : (n * n));
+			printf("时间: %llds\n分数: %lld\n\n按回车返回主菜单...", endtime - starttime, gameover ? opencnt : (n * n));
 			pause();
 			PGB::HPB(2, gameover ? opencnt : (n * n), endtime - starttime);
 			return !gameover;

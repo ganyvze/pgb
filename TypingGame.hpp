@@ -72,10 +72,10 @@ namespace TypingGame {
 	LL speed(LL starttime, LL nowtime) { if(nowtime == starttime) return 0; return double(typed.size()) / ((nowtime - starttime) / 60.0); }
     LL wrongcnt() { LL cnt = 0; for(UL i = 0; i < typed.size(); i ++) if(typed[i] != typing[i]) cnt ++; return cnt; }
 	bool game() {
-		printf("Words count: "), n = get();
+		printf("单词数量: "), n = get();
 		if(Isout) return false;
 		while(n < 0) {
-			printf("Length should be larger than 0.\nTyping length: "), n = get();
+			printf("数量必须大于 0。\n输入长度: "), n = get();
 			if(Isout) return false;
 		}
 		init();
@@ -86,12 +86,12 @@ namespace TypingGame {
 			system("cls");
 			printword();
 			LL nowtime = time(0);
-			printf("Speed: %lld letters/minute\nDone: %lld%%\nWrong: %lld\nMenu: [TAB]\n", speed(starttime, nowtime), LL(100ull * typed.size() / typing.size()), wrongcnt());
+			printf("速度: %lld 字母/分钟\n完成: %lld%%\n错误: %lld\n菜单: [TAB]\n", speed(starttime, nowtime), LL(100ull * typed.size() / typing.size()), wrongcnt());
 			reinput:char in = getch();
 			if(in == EOF) exit(-1);
 			if(in == '\t') {
 				system("cls");
-				printf("Are you sure you are going to quit? (Y/N)");
+				printf("确定要退出吗？(Y/N)");
 				re2: char is = getch();
 				if(is == EOF) exit(-1);
 				if(is == 'y' || is == 'Y') return false;
@@ -107,9 +107,9 @@ namespace TypingGame {
 		system("cls");
 		printword();
 		LL wrong = wrongcnt();
-		printf("\nScore: %lld Speed: %lld letters/minute Time: %llds Wrong: %lld\n", speed(starttime, endtime) * LL(1.0 * (LL(typed.size()) - wrong) / LL(typed.size())), speed(starttime, endtime), endtime - starttime, wrong);
-		if(typing.size() != typed.size()) printf("Press enter to return to menu...");
-		else printf("Perfect! You finished all of the words!\nPress enter to return to menu...");
+		printf("\n分数: %lld 速度: %lld 字母/分钟 时间: %llds 错误: %lld\n", speed(starttime, endtime) * LL(1.0 * (LL(typed.size()) - wrong) / LL(typed.size())), speed(starttime, endtime), endtime - starttime, wrong);
+		if(typing.size() != typed.size()) printf("按回车返回主菜单...");
+		else printf("完美！你已经完成了所有单词！\n按回车返回主菜单...");
 		pause();
 		PGB::HPB(6, 1.0 * speed(starttime, endtime) * (LL(typed.size()) - wrong) / LL(typed.size()), endtime - starttime);
 		return true;

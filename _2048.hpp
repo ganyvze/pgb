@@ -18,11 +18,11 @@ namespace _2048 {
 		for(LL i = 1; i <= 5 - length; i ++) printf(" ");
 	}
 	void printMP() {
-		printf("Score: %lld\n\n", score);
+		printf("分数: %lld\n\n", score);
 		for(LL i = 1; i <= 4; i ++, printf("\n")) for(LL j = 1; j <= 4; j ++) if(mp[i][j]) printnumber(mp[i][j]);
 		else chco(0), printf("-    ");
 		chco("");
-		printf("\nPress:\nW or I for up\nS or K for down\nA or J for left\nD or L for right\n[TAB] for menu\n");
+		printf("\n按键：\nW 或 I：上\nS 或 K：下\nA 或 J：左\nD 或 L：右\n[TAB]：菜单\n");
 	}
 	bool win() {
 		for(LL i = 1; i <= 4; i ++) for(LL j = 1; j <= 4; j ++) if(mp[i][j] == 2048) return true;
@@ -128,7 +128,7 @@ namespace _2048 {
 	}
 	bool game() {
 		init();
-		printf("Welcome to 2048 game.\nPress enter to start...");
+		printf("欢迎来到 2048 游戏。\n按回车开始...");
 		pause();
 		bool iswin = true, cont = false;
 		LL starttime = nulltime;
@@ -137,8 +137,8 @@ namespace _2048 {
 			printMP();
 			if(win() && !cont) {
 				cont = 1;
-				printf("\nPerfect! You've finally synthesized a 2048 tile.\n");
-				printf("Would you like to continue to try? (Y/N)");
+				printf("\n恭喜！你终于合成了一个 2048 方块。\n");
+				printf("是否继续挑战？(Y/N)");
 				re3: char is = getch();
 				if(is == EOF) exit(-1);
 				if(is == 'y' || is == 'Y') continue;
@@ -149,7 +149,7 @@ namespace _2048 {
 			if(c == EOF) exit(-1);
 			if(c == '\t') {
 				system("cls");
-				printf("Are you sure you are going to quit? (Y/N)");
+				printf("确定要退出吗？(Y/N)");
 				re2: char is = getch();
 				if(is == EOF) exit(-1);
 				if(is == 'y' || is == 'Y') return 0; 
@@ -162,13 +162,13 @@ namespace _2048 {
 		}
 		LL endtime = time(0);
 		system("cls");
-		printf("Score: %lld\n\n", score);
+		printf("分数: %lld\n\n", score);
 		for(LL i = 1; i <= 4; i ++, printf("\n")) for(LL j = 1; j <= 4; j ++) if(mp[i][j]) printnumber(mp[i][j]);
 		else chco(0), printf("-    ");
 		chco("");
-		if(!iswin) printf("\nGame over. You have no place to move.\n");
-		printf("Time: %llds", endtime - starttime);
-		printf("\n\nPress enter to return to menu...");
+		if(!iswin) printf("\n游戏结束。你已经无路可走。\n");
+		printf("时间: %llds", endtime - starttime);
+		printf("\n\n按回车返回主菜单...");
 		pause();
 		PGB::HPB(5, score, endtime - starttime);
 		return iswin;

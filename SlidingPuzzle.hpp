@@ -50,11 +50,11 @@ namespace SlidingPuzzle {
 		return true;
 	}
 	bool game() {
-		printf("Puzzle size: "), n = get();
-		while(n <= 2 && !Isout) printf("Number should br larger than 2.\nPuzzle size: "), n = get();
+		printf("拼图大小: "), n = get();
+		while(n <= 2 && !Isout) printf("大小必须大于 2。\n拼图大小: "), n = get();
 		if(Isout) return 0;
 		re1:system("cls");
-		printf("Difficulties:\n\nA:Easy\nB:Normal\nC:Hard\n\nChoose a difficulty: ");
+		printf("难度：\n\nA: 简单\nB: 普通\nC: 困难\n\n请选择难度: ");
 		string dif_; getlstr(dif_);
 		if(dif_ == "/hub") return false;
 		if(dif_.empty()) goto re1;
@@ -71,12 +71,12 @@ namespace SlidingPuzzle {
 			system("cls");
 			donecnt = donecount();
 			printpuzzle();
-			printf("Press:\nW or I for up\nS or K for down\nA or J for left\nD or L for right\n[TAB] for menu\n");
+			printf("按键：\nW 或 I：上\nS 或 K：下\nA 或 J：左\nD 或 L：右\n[TAB]：菜单\n");
 			re:char op = getch();
 			if(op == EOF) exit(-1);
 			if(op == '\t') {
 				system("cls");
-				printf("Are you sure you are going to quit? (Y/N)");
+				printf("确定要退出吗？(Y/N)");
 				re2: char is = getch();
 				if(is == EOF) exit(-1);
 				if(is == 'y' || is == 'Y') return false;
@@ -90,7 +90,7 @@ namespace SlidingPuzzle {
 		LL endtime = time(0);
 		system("cls");
 		printpuzzle();
-		printf("Perfect! Time: %llds\nScore: %lld\nPress enter to return to menu...", endtime - starttime, n * n * (d - 'a' + 1));
+		printf("完成！时间: %llds\n分数: %lld\n按回车返回主菜单...", endtime - starttime, n * n * (d - 'a' + 1));
 		PGB::HPB(7, n * n * (d - 'a' + 1), endtime - starttime);
 		pause();
 		return true;

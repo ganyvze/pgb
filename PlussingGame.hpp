@@ -35,7 +35,7 @@ namespace PlussingGame {
 		else if(vis[i][j]) chco("blue"), printf("(%lld)", mp[i][j]);
 		else chco(""), printf(" %lld ", mp[i][j]);
 		chco("");
-		printf("\nPress:\nW or I for up\nS or K for down\nA or J for left\nD or L for right\n[TAB] for menu\n");
+		printf("\n按键：\nW 或 I：上\nS 或 K：下\nA 或 J：左\nD 或 L：右\n[TAB]：菜单\n");
 	}
 	bool move(char way) {
 		LL x = X, y = Y;
@@ -56,21 +56,21 @@ namespace PlussingGame {
 		return 1;
 	}
 	bool game() {
-		printf("Board size: "), n = get();
-		while(n <= 2 && !Isout) printf("Number should larger than 2.\nBoard size: "), n = get();
+		printf("棋盘大小: "), n = get();
+		while(n <= 2 && !Isout) printf("大小必须大于 2。\n棋盘大小: "), n = get();
 		if(Isout) return 0;
 		init();
 		new_board();
 		LL starttime = nulltime;
 		while(sum != target || (X != n || Y != n)) {
 			system("cls");
-			printf("Target: %lld\nNow total: %lld\n\n", target, sum);
+			printf("目标: %lld\n当前总和: %lld\n\n", target, sum);
 			printboard();
 			re:char c = getch();
 			if(c == EOF) exit(-1);
 			if(c == '\t') {
 				system("cls");
-				printf("Are you sure you are going to quit? (Y/N)");
+				printf("确定要退出吗？(Y/N)");
 				re2: char is = getch();
 				if(is == EOF) exit(-1);
 				if(is == 'y' || is == 'Y') return false;
@@ -83,7 +83,7 @@ namespace PlussingGame {
 		}
 		LL endtime = time(0);
 		system("cls");
-		printf("Target: %lld\nNow total: %lld\n\n", target, sum);
+		printf("目标: %lld\n当前总和: %lld\n\n", target, sum);
 		for(LL i = 1; i <= n; i ++, printf("\n")) for(LL j = 1; j <= n; j ++)
 		if(i == X && j == Y && i != 1 && j != 1 && i != n && j != n) chco("red"), printf("[%lld]", mp[i][j]);
 		else if(i == X && j == Y && i == 1 && j == 1) chco("red"), printf("[S]");
@@ -92,8 +92,8 @@ namespace PlussingGame {
 		else if(i == n && j == n) chco("green"), printf(" E ");
 		else if(vis[i][j]) chco("blue"), printf("(%lld)", mp[i][j]);
 		else chco(""), printf(" %lld ", mp[i][j]);
-		chco("green"), printf("\nYou win!\n"), chco("");
-		printf("Score: %lld Time: %llds\nPress enter to return to menu...", n * 20, endtime - starttime);
+		chco("green"), printf("\n你赢了！\n"), chco("");
+		printf("分数: %lld 时间: %llds\n按回车返回主菜单...", n * 20, endtime - starttime);
 		PGB::HPB(8, n * 20, endtime - starttime);
 		pause(); return true;
 	}
