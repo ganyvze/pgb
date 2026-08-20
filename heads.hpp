@@ -37,6 +37,8 @@ using std::array;
 using LL = long long;
 using UL = unsigned long long;
 
+namespace PGB { extern bool quick_output; }
+
 inline string G2U(string text) {
 	return text;
 }
@@ -47,6 +49,11 @@ inline void my_sleep(int ms) {
 
 inline void put(string text) {
 	string out_s = G2U(text);
+	if(PGB::quick_output) {
+		fputs(out_s.c_str(), stdout);
+		fflush(stdout);
+		return;
+	}
 	int len = static_cast<int>(out_s.size());
 	for(int i = 0; i < len; i++) {
 		unsigned char c = static_cast<unsigned char>(out_s[i]);

@@ -12,8 +12,6 @@ Plain Game Box 是一个基于 C++ 和 Windows 控制台的小游戏合集，提
 2. **Minesweeper - Diamond Finder**
    - 特殊扫雷玩法
    - 在雷区中寻找钻石
-
-3. **Tic Tac Toe**
    - 3×3 井字棋
    - 支持简单、普通和困难三种 AI 难度
    - 可选择使用 `X` 或 `O`
@@ -25,11 +23,7 @@ Plain Game Box 是一个基于 C++ 和 Windows 控制台的小游戏合集，提
 
 5. **2048**
    - 4×4 数字合成游戏
-   - 目标是合成 `2048`
    - 支持 `WASD`、`IJKL` 两组方向键
-
-6. **Typing Game**
-   - 输入随机生成的 C++ 关键字和标准库名称
    - 统计输入速度、完成度和错误数量
 
 7. **Sliding Puzzle**
@@ -44,7 +38,7 @@ Plain Game Box 是一个基于 C++ 和 Windows 控制台的小游戏合集，提
 ## 运行环境
 
 - Windows
-- 支持 C++17 的编译器
+- 支持 C++11 - C++17 的编译器
 - Windows Console API
 - `conio.h`
 - `Windows.h`
@@ -125,21 +119,15 @@ GameHistory.bin
 
 历史文件使用二进制格式保存，请不要直接使用文本编辑器修改。
 
-## FilePusher
+## 合并历史文件
 
-`FilePusher.exe` 用于将其他 `.bin` 历史文件中的记录合并到当前目录的 `GameHistory.bin`。
-
-使用方法：
-
-1. 将需要合并的历史文件放到 `FilePusher.exe` 所在目录
-2. 启动 `FilePusher.exe`
-3. 输入历史文件名，例如：
+主菜单进入 **设置**，选择 **合并其他历史文件**，然后输入需要合并的 `.bin` 文件名，例如：
 
 ```text
 backup.bin
 ```
 
-4. 程序会将其中的记录追加到默认历史文件中
+程序会将其中的记录追加到当前正在使用的历史文件中。
 
 ## 设置
 
@@ -147,7 +135,7 @@ backup.bin
 
 - **Eye protection mode**
   - 关闭颜色变化
-  - 可提升部分终端中的刷新速度
+  - 兼容旧版 Windows 控制台
 
 - **Set random seed**
   - 设置固定随机种子
@@ -157,14 +145,20 @@ backup.bin
 - **Testing mode**
   - 开启后不会保存游戏历史
 
+- **Quick output**
+   - 关闭打字机输出效果，直接输出文字
+
 - **Use other history file names**
   - 使用自定义的 `.bin` 历史文件
+
+- **Merge other history files**
+   - 将另一个 `.bin` 历史文件中的记录追加到当前历史文件
 
 ## 项目结构
 
 ```text
 PlainGameBox.cpp    主程序入口
-FilePusher.cpp      历史文件合并工具
+FilePusher.cpp      独立的历史文件合并工具（兼容入口）
 game.hpp            主菜单、设置和历史记录功能
 heads.hpp           公共头文件和类型定义
 tools.hpp           输入、随机数、颜色和控制台工具

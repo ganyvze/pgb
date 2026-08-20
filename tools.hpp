@@ -83,7 +83,10 @@ void setRandomSeed(LL seed) { rng.seed(randomSeed = seed); }
 void setRandomSeed() { randomSeed = -1, rng.seed(time(0)); }
 LL random(LL min, LL max) { return std::uniform_int_distribution <LL> (min, max)(rng); }
 string colours[] = { "", "blue", "red", "green", "Lblue", "purple", "yellow", "gray", "cyan", "brown" };
-namespace PGB { bool eye_protection = 0; }
+namespace PGB {
+	bool eye_protection = 0;
+	bool quick_output = 0;
+}
 void chco(string s) {
 	if(PGB::eye_protection) return ;
     if(s == colours[1]) SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE);

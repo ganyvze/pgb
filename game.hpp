@@ -176,7 +176,6 @@ namespace PGB {
 		put("删除多条记录: delbe [起始编号] [结束编号]\n");
 		put("删除全部记录: delall\n重新加载数据: reload\n排序记录: sort\n");
 		put("交换记录: swap [第一个编号] [第二个编号]\n");
-		put("若需要复制记录，请使用 FilePusher。\n");
 		put("菜单: /hub\n\n操作: ");
 		string op; getstr(op);
 		if(op == "/hub") return ;
@@ -220,18 +219,54 @@ namespace PGB {
 		qu:system("cls");
 		goto re;
 	}
+	void MergeHistory() {
+		system("cls");
+		put("请输入要合并的历史文件名: ");
+		string sourceFilename;
+		getlstr(sourceFilename);
+		if(Isout) return ;
+		if(sourceFilename.size() < 5 || sourceFilename.substr(sourceFilename.size() - 4) != ".bin" || failfilename(sourceFilename)) {
+			put("历史文件名必须是有效的 .bin 文件。\n按回车返回...");
+			pause();
+			return ;
+		}
+		if(sourceFilename == nowfilename) {
+			put("不能将历史文件合并到自身。\n按回车返回...");
+			pause();
+			return ;
+		}
+		string targetFilename = nowfilename;
+		vector<GameRes> targetHistory = History;
+		nowfilename = sourceFilename;
+		History.clear();
+		if(!loadHistory()) {
+			nowfilename = targetFilename;
+			History = targetHistory;
+			put("未找到该历史文件。\n按回车返回...");
+			pause();
+			return ;
+		}
+		vector<GameRes> sourceHistory = History;
+		nowfilename = targetFilename;
+		History = targetHistory;
+		History.insert(History.end(), sourceHistory.begin(), sourceHistory.end());
+		if(saveHistory()) put("历史文件合并完成。\n按回车返回...");
+		pause();
+	}
 	void Settings() {
 		while(true) {
 			system("cls");
 			put("设置:\n");
-			put("1. 护眼模式（关闭颜色变化，屏幕输出更快） ["); chco(eye_protection ? "green" : "Lblue"); put(eye_protection ? "开启" : "关闭"); chco(""); put("]\n");
+			put("1. 兼容旧版控制台 ["); chco(eye_protection ? "green" : "Lblue"); put(eye_protection ? "开启" : "关闭"); chco(""); put("]\n");
 			put("2. 设置随机种子 ["); if(randomSeed == -1) chco("Lblue"), put("未设置"); else chco("green"), putf("当前种子: %lld", randomSeed); chco(""); put("]\n");
-			put("3. 测试模式（不保存游戏历史） ["); chco(testmode ? "green" : "Lblue"); put(testmode ? "开启" : "关闭"); chco(""); put("]\n");
-			put("4. 使用其他历史文件名 ["); chco(nowfilename == BKfilename ? "Lblue" : "green"); put(nowfilename == BKfilename ? "未修改" : ("当前文件名: " + nowfilename)); chco(""); put("]\n");
-			put("__________________\n菜单: /hub\n更改选项: ");
+			put("3. 不保存游戏历史 ["); chco(testmode ? "green" : "Lblue"); put(testmode ? "开启" : "关闭"); chco(""); put("]\n");
+			put("4. 快速输出 ["); chco(quick_output ? "green" : "Lblue"); put(quick_output ? "开启" : "关闭"); chco(""); put("]\n");
+			put("5. 使用其他历史文件名 ["); chco(nowfilename == BKfilename ? "Lblue" : "green"); put(nowfilename == BKfilename ? "未修改" : ("当前文件名: " + nowfilename)); chco(""); put("]\n");
+			put("6. 合并其他历史文件\n");
+			put("0. 退出\n__________________\n更改选项: ");
 			string in;
 			getlstr(in);
-			if(in == "/hub") return ;
+			if(in == "0") return ;
 			if(in.empty()) continue;
 			switch(in.front()) {
 				case '1': eye_protection ^= 1; break;
@@ -239,13 +274,15 @@ namespace PGB {
 						  LL x; x = get(); if(Isout) return ;
 						  if(x < 0) goto re1; if(x == 0) setRandomSeed(); else setRandomSeed(x); break;
 				case '3': testmode ^= 1; break;
-				case '4': re2:system("cls"); put("重置（留空即可重置）: ");
+				case '4': quick_output ^= 1; break;
+				case '5': { re2:system("cls"); put("重置（留空即可重置）: ");
 						  string s; getlstr(s); if(Isout) return ;
 						  if(s.empty()) nowfilename = BKfilename;
 						  else if(failfilename(s)) goto re2;
 						  else if(s.size() < 4 || (s.size() >= 4 && s.substr(s.size() - 4, 4) != ".bin")) nowfilename = s + ".bin";
 						  else nowfilename = s;
-						  History.clear(); loadHistory(); break;
+						  History.clear(); loadHistory(); break; }
+				case '6': MergeHistory(); break;
 			}
 		}
 	}
