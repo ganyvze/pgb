@@ -86,6 +86,117 @@ string colours[] = { "", "blue", "red", "green", "Lblue", "purple", "yellow", "g
 namespace PGB {
 	bool eye_protection = 0;
 	bool quick_output = 0;
+	bool update_check = 1;
+}
+
+inline void load_update_check_setting() {
+	ifstream fin("PGBUpdateCheck.cfg");
+	int enabled = 1;
+	if(fin >> enabled) PGB::update_check = enabled != 0;
+}
+
+inline void save_update_check_setting() {
+	ofstream fout("PGBUpdateCheck.cfg");
+	if(fout) fout << (PGB::update_check ? 1 : 0);
+}
+
+inline bool check_for_updates() {
+	if(!PGB::update_check) return false;
+	char tempPath[MAX_PATH];
+	char exePath[MAX_PATH];
+	if(!GetTempPathA(MAX_PATH, tempPath) || !GetModuleFileNameA(nullptr, exePath, MAX_PATH)) return false;
+	string base = string(tempPath) + "PGBUpdateCheck_" + to_string(GetCurrentProcessId());
+	string scriptPath = base + ".bat";
+	string resultPath = base + ".result";
+	const char* script = R"BAT(@echo off
+setlocal
+set "exe=%~1"
+set "result=%~2"
+set "json=%TEMP%\PGBUpdateCheck_%RANDOM%.json"
+set "remote="
+curl.exe -fsSL -A "PlainGameBox" "https://api.github.com/repos/ganyvze/pgb/releases/latest" -o "%json%" >nul 2>nul
+if errorlevel 1 goto unavailable
+set "PGB_JSON=%json%"
+for %%A in ("%exe%") do set "PGB_ASSET=%%~nxA"
+set "PGB_EXE=%exe%"
+for /f "delims=" %%A in ('powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "$j=Get-Content -Raw -LiteralPath $env:PGB_JSON ^| ConvertFrom-Json; $a=@($j.assets ^| Where-Object { $_.name -eq $env:PGB_ASSET })[0]; if(-not $a){$a=@($j.assets ^| Where-Object { $_.name -match '\.exe$' })[0]}; if($a -and $a.digest){$a.digest -replace '^^sha256:',''} elseif($a){$p=Join-Path $env:TEMP ('PGBUpdateAsset_' + [guid]::NewGuid() + '.bin'); try { Invoke-WebRequest -UseBasicParsing -Uri $a.browser_download_url -OutFile $p; (Get-FileHash -Algorithm SHA256 -LiteralPath $p).Hash } finally { Remove-Item $p -Force -ErrorAction SilentlyContinue }}"') do set "remote=%%A"
+if not defined remote goto unavailable
+for /f "delims=" %%A in ('powershell.exe -NoProfile -Command "(Get-FileHash -Algorithm SHA256 -LiteralPath $env:PGB_EXE).Hash"') do set "local=%%A"
+if /i "%local%"=="%remote%" >"%result%" echo OK
+if /i not "%local%"=="%remote%" >"%result%" echo UPDATE
+goto cleanup
+:unavailable
+>"%result%" echo UNAVAILABLE
+:cleanup
+del "%json%" >nul 2>nul
+)BAT";
+	{ ofstream fout(scriptPath, ios::binary); if(!fout) return false; fout << script; }
+	string command = "cmd.exe /d /c call \"" + scriptPath + "\" \"" + exePath + "\" \"" + resultPath + "\"";
+	vector<char> commandBuffer(command.begin(), command.end());
+	commandBuffer.push_back('\0');
+	STARTUPINFOA startupInfo{};
+	startupInfo.cb = sizeof(startupInfo);
+	PROCESS_INFORMATION processInfo{};
+	bool launched = CreateProcessA(nullptr, commandBuffer.data(), nullptr, nullptr, FALSE, CREATE_NO_WINDOW, nullptr, nullptr, &startupInfo, &processInfo);
+	if(!launched) { DeleteFileA(scriptPath.c_str()); return false; }
+	DWORD status = WaitForSingleObject(processInfo.hProcess, 15000);
+	if(status == WAIT_TIMEOUT) TerminateProcess(processInfo.hProcess, 1);
+	CloseHandle(processInfo.hThread);
+	CloseHandle(processInfo.hProcess);
+	ifstream result(resultPath);
+	string state;
+	result >> state;
+	DeleteFileA(scriptPath.c_str());
+	DeleteFileA(resultPath.c_str());
+	return state == "UPDATE";
+}
+inline bool install_update() {
+	char tempPath[MAX_PATH];
+	char exePath[MAX_PATH];
+	if(!GetTempPathA(MAX_PATH, tempPath) || !GetModuleFileNameA(nullptr, exePath, MAX_PATH)) return false;
+	string base = string(tempPath) + "PGBUpdateInstall_" + to_string(GetCurrentProcessId());
+	string scriptPath = base + ".bat";
+	const char* script = R"BAT(@echo off
+setlocal
+set "exe=%~1"
+set "pid=%~2"
+set "json=%TEMP%\PGBUpdateInstall_%RANDOM%.json"
+set "download=%TEMP%\PGBUpdateInstall_%RANDOM%.exe"
+set "updated=0"
+curl.exe -fsSL -A "PlainGameBox" "https://api.github.com/repos/ganyvze/pgb/releases/latest" -o "%json%" >nul 2>nul
+if errorlevel 1 goto cleanup
+set "PGB_JSON=%json%"
+set "PGB_DOWNLOAD=%download%"
+set "PGB_EXE=%exe%"
+for /f "delims=" %%A in ('powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "$j=Get-Content -Raw -LiteralPath $env:PGB_JSON ^| ConvertFrom-Json; $a=@($j.assets ^| Where-Object { $_.name -eq ([IO.Path]::GetFileName($env:PGB_EXE)) })[0]; if(-not $a){$a=@($j.assets ^| Where-Object { $_.name -match '\.exe$' })[0]}; if($a){$a.browser_download_url}"') do set "url=%%A"
+if not defined url goto cleanup
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest -UseBasicParsing -Uri '%url%' -OutFile $env:PGB_DOWNLOAD" >nul 2>nul
+if not exist "%download%" goto cleanup
+:wait
+tasklist /FI "PID eq %pid%" | find "%pid%" >nul
+if not errorlevel 1 (timeout /t 1 /nobreak >nul & goto wait)
+move /Y "%download%" "%exe%" >nul
+if errorlevel 1 goto cleanup
+set "updated=1"
+start "" "%exe%"
+:cleanup
+if "%updated%"=="0" start "" "%exe%"
+del "%json%" >nul 2>nul
+del "%download%" >nul 2>nul
+del "%~f0" >nul 2>nul
+)BAT";
+	{ ofstream fout(scriptPath, ios::binary); if(!fout) return false; fout << script; }
+	string command = "cmd.exe /d /c call \"" + scriptPath + "\" \"" + exePath + "\" \"" + to_string(GetCurrentProcessId()) + "\"";
+	vector<char> commandBuffer(command.begin(), command.end());
+	commandBuffer.push_back('\0');
+	STARTUPINFOA startupInfo{};
+	startupInfo.cb = sizeof(startupInfo);
+	PROCESS_INFORMATION processInfo{};
+	bool launched = CreateProcessA(nullptr, commandBuffer.data(), nullptr, nullptr, FALSE, CREATE_NO_WINDOW | DETACHED_PROCESS, nullptr, nullptr, &startupInfo, &processInfo);
+	if(!launched) { DeleteFileA(scriptPath.c_str()); return false; }
+	CloseHandle(processInfo.hThread);
+	CloseHandle(processInfo.hProcess);
+	return true;
 }
 void chco(string s) {
 	if(PGB::eye_protection) return ;

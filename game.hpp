@@ -103,9 +103,6 @@ namespace PGB {
 		chco("red"), put("Game ");
 		chco("Lblue"), put("Box");
 		chco(""), put(" =====\n");
-		chco("blue"), put("Blue");
-		chco("red"), put("Carrot ");
-		chco("yellow"), put("studio\n\n");
 		chco("");
 	}
 	void printMaceGambit() {
@@ -263,6 +260,7 @@ namespace PGB {
 			put("4. 快速输出 ["); chco(quick_output ? "green" : "Lblue"); put(quick_output ? "开启" : "关闭"); chco(""); put("]\n");
 			put("5. 使用其他历史文件名 ["); chco(nowfilename == BKfilename ? "Lblue" : "green"); put(nowfilename == BKfilename ? "未修改" : ("当前文件名: " + nowfilename)); chco(""); put("]\n");
 			put("6. 合并其他历史文件\n");
+			put("7. 启动时检查更新 ["); chco(update_check ? "green" : "Lblue"); put(update_check ? "开启" : "关闭"); chco(""); put("]\n");
 			put("0. 退出\n__________________\n更改选项: ");
 			string in;
 			getlstr(in);
@@ -283,6 +281,7 @@ namespace PGB {
 						  else nowfilename = s;
 						  History.clear(); loadHistory(); break; }
 				case '6': MergeHistory(); break;
+				case '7': update_check ^= 1; save_update_check_setting(); break;
 			}
 		}
 	}

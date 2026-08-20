@@ -69,7 +69,7 @@ inline void put(string text) {
 			putchar(out_s[++i]);
 		}
 		fflush(stdout);
-		if(rand() % 2) my_sleep(15);
+		if(rand() % 2) my_sleep(1);
 	}
 }
 

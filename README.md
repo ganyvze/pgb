@@ -154,6 +154,11 @@ backup.bin
 - **Merge other history files**
    - 将另一个 `.bin` 历史文件中的记录追加到当前历史文件
 
+- **启动时检查更新**
+   - 默认开启，启动时通过 GitHub REST API 检查最新 Release
+   - 可在设置中关闭，选项状态保存在 `PGBUpdateCheck.cfg`
+   - 检查需要系统提供 `curl.exe` 和 PowerShell；网络不可用时不会影响启动
+
 ## 项目结构
 
 ```text
