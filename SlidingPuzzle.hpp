@@ -53,7 +53,7 @@ namespace SlidingPuzzle {
 		printf("拼图大小: "), n = get();
 		while(n <= 2 && !Isout) printf("大小必须大于 2。\n拼图大小: "), n = get();
 		if(Isout) return 0;
-		re1:system("cls");
+		re1:refresh_screen();
 		printf("难度：\n\nA: 简单\nB: 普通\nC: 困难\n\n请选择难度: ");
 		string dif_; getlstr(dif_);
 		if(dif_ == "/hub") return false;
@@ -68,14 +68,14 @@ namespace SlidingPuzzle {
 		init(), new_puzzle();
 		LL starttime = nulltime;
 		while(donecnt != isdone) {
-			system("cls");
+			refresh_screen();
 			donecnt = donecount();
 			printpuzzle();
 			printf("按键：\nW 或 I：上\nS 或 K：下\nA 或 J：左\nD 或 L：右\n[TAB]：菜单\n");
 			re:char op = getch();
 			if(op == EOF) exit(-1);
 			if(op == '\t') {
-				system("cls");
+				refresh_screen();
 				printf("确定要退出吗？(Y/N)");
 				re2: char is = getch();
 				if(is == EOF) exit(-1);
@@ -88,7 +88,7 @@ namespace SlidingPuzzle {
 			if(starttime == nulltime) starttime = time(0);
 		}
 		LL endtime = time(0);
-		system("cls");
+		refresh_screen();
 		printpuzzle();
 		printf("完成！时间: %llds\n分数: %lld\n按回车返回主菜单...", endtime - starttime, n * n * (d - 'a' + 1));
 		PGB::HPB(7, n * n * (d - 'a' + 1), endtime - starttime);

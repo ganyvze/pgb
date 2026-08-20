@@ -63,13 +63,13 @@ namespace PlussingGame {
 		new_board();
 		LL starttime = nulltime;
 		while(sum != target || (X != n || Y != n)) {
-			system("cls");
+			refresh_screen();
 			printf("目标: %lld\n当前总和: %lld\n\n", target, sum);
 			printboard();
 			re:char c = getch();
 			if(c == EOF) exit(-1);
 			if(c == '\t') {
-				system("cls");
+				refresh_screen();
 				printf("确定要退出吗？(Y/N)");
 				re2: char is = getch();
 				if(is == EOF) exit(-1);
@@ -82,7 +82,7 @@ namespace PlussingGame {
 			if(starttime == nulltime) starttime = time(0);
 		}
 		LL endtime = time(0);
-		system("cls");
+		refresh_screen();
 		printf("目标: %lld\n当前总和: %lld\n\n", target, sum);
 		for(LL i = 1; i <= n; i ++, printf("\n")) for(LL j = 1; j <= n; j ++)
 		if(i == X && j == Y && i != 1 && j != 1 && i != n && j != n) chco("red"), printf("[%lld]", mp[i][j]);

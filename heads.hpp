@@ -47,6 +47,17 @@ inline void my_sleep(int ms) {
 	std::this_thread::sleep_for(std::chrono::milliseconds(ms));
 }
 
+inline void refresh_screen() {
+#ifdef _WIN32
+	fflush(stdout);
+	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+	COORD origin = {0, 0};
+	SetConsoleCursorPosition(console, origin);
+#else
+	put("\033[H");
+#endif
+}
+
 inline void put(string text) {
 	string out_s = G2U(text);
 	if(PGB::quick_output) {

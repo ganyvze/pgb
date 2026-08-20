@@ -83,14 +83,14 @@ namespace TypingGame {
 		n = typing.size();
 		LL starttime = nulltime;
 		while(typing.size() != typed.size()) {
-			system("cls");
+			refresh_screen();
 			printword();
 			LL nowtime = time(0);
 			printf("速度: %lld 字母/分钟\n完成: %lld%%\n错误: %lld\n菜单: [TAB]\n", speed(starttime, nowtime), LL(100ull * typed.size() / typing.size()), wrongcnt());
 			reinput:char in = getch();
 			if(in == EOF) exit(-1);
 			if(in == '\t') {
-				system("cls");
+				refresh_screen();
 				printf("确定要退出吗？(Y/N)");
 				re2: char is = getch();
 				if(is == EOF) exit(-1);
@@ -104,7 +104,7 @@ namespace TypingGame {
 			if(starttime == nulltime) starttime = time(0);
 		}
 		LL endtime = time(0);
-		system("cls");
+		refresh_screen();
 		printword();
 		LL wrong = wrongcnt();
 		printf("\n分数: %lld 速度: %lld 字母/分钟 时间: %llds 错误: %lld\n", speed(starttime, endtime) * LL(1.0 * (LL(typed.size()) - wrong) / LL(typed.size())), speed(starttime, endtime), endtime - starttime, wrong);

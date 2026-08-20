@@ -183,9 +183,9 @@ namespace Tictactoe {
 		if(dif_ == "/hub") return false;
 		if(dif_.empty()) goto re1;
 		dif = dif_.front();
-		if(tolower(dif) != 'a' && tolower(dif) != 'b' && tolower(dif) != 'c') { system("cls"); goto re1; }
+		if(tolower(dif) != 'a' && tolower(dif) != 'b' && tolower(dif) != 'c') { refresh_screen(); goto re1; }
 		dif = tolower(dif);
-		re2:system("cls");
+		re2:refresh_screen();
 		printf("请选择棋子(X/O): ");
 		getlstr(team);
 		if(team == "/hub") return false;
@@ -199,7 +199,7 @@ namespace Tictactoe {
 		}
 		LL starttime = nulltime;
 		while(!checkwin() && aircnt) {
-			system("cls");
+			refresh_screen();
 			printboard();
 			auto nd = getxy();
 			if(again) return false;
@@ -210,7 +210,7 @@ namespace Tictactoe {
 			if(starttime == nulltime) starttime = time(0);
 		}
 		LL endtime = time(0);
-		system("cls");
+		refresh_screen();
 		printendboard();
 		char w = checkwin();
 		if(!w) printf("平局。\n");

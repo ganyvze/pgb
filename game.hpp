@@ -200,7 +200,7 @@ namespace PGB {
 			History.erase(History.begin() + beg - 1, History.begin() + end);
 			saveHistory();
 		} else if(op == "delall") {
-			system("cls");
+			refresh_screen();
 			put("确定要删除全部历史记录吗(Y/N)?");
 			reinput:char in = getch();
 			if(in == 'y' || in == 'Y') History.clear();
@@ -213,11 +213,11 @@ namespace PGB {
 			swap(History[n1], History[n2]);
 			saveHistory();
 		}
-		qu:system("cls");
+		qu:refresh_screen();
 		goto re;
 	}
 	void MergeHistory() {
-		system("cls");
+		refresh_screen();
 		put("请输入要合并的历史文件名: ");
 		string sourceFilename;
 		getlstr(sourceFilename);
@@ -252,7 +252,7 @@ namespace PGB {
 	}
 	void Settings() {
 		while(true) {
-			system("cls");
+			refresh_screen();
 			put("设置:\n");
 			put("1. 兼容旧版控制台 ["); chco(eye_protection ? "green" : "Lblue"); put(eye_protection ? "开启" : "关闭"); chco(""); put("]\n");
 			put("2. 设置随机种子 ["); if(randomSeed == -1) chco("Lblue"), put("未设置"); else chco("green"), putf("当前种子: %lld", randomSeed); chco(""); put("]\n");
@@ -268,12 +268,12 @@ namespace PGB {
 			if(in.empty()) continue;
 			switch(in.front()) {
 				case '1': eye_protection ^= 1; break;
-				case '2': re1: system("cls"); put("重置（输入 0 可重置）: ");
+				case '2': re1: refresh_screen(); put("重置（输入 0 可重置）: ");
 						  LL x; x = get(); if(Isout) return ;
 						  if(x < 0) goto re1; if(x == 0) setRandomSeed(); else setRandomSeed(x); break;
 				case '3': testmode ^= 1; break;
 				case '4': quick_output ^= 1; break;
-				case '5': { re2:system("cls"); put("重置（留空即可重置）: ");
+				case '5': { re2:refresh_screen(); put("重置（留空即可重置）: ");
 						  string s; getlstr(s); if(Isout) return ;
 						  if(s.empty()) nowfilename = BKfilename;
 						  else if(failfilename(s)) goto re2;
@@ -294,11 +294,11 @@ namespace PGB {
 			put("\nC. 查看历史记录\nS. 设置\nX. 退出\n____________\n选择: ");
 			string s;
 			getlstr(s);
-			system("cls");
+			refresh_screen();
 			for(char& i : s) if(isalpha(i)) i = tolower(i);
 			if(s == "gambit" || s == "mace" || s == "macegambit") {
 				printMaceGambit();
-				system("cls");
+				refresh_screen();
 				continue;
 			}
 			if(s.size() == 1) switch(s.front()) {
@@ -321,7 +321,7 @@ namespace PGB {
 				put("carrot ");
 				chco("");
 			}
-			system("cls");
+				refresh_screen();
 			Isout = false;
 		}
 	}

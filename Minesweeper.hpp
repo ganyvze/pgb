@@ -135,7 +135,7 @@ namespace Minesweeper {
 			while(n <= 3 && !Isout) printf("大小必须大于 3。\n棋盘大小: "), n = get();
 			if(Isout) return false;
 			init();
-			system("cls");
+			refresh_screen();
 			chco("blue");
 			printf("剩余雷数: %lld\n", boommax);
 			chco("");
@@ -147,7 +147,7 @@ namespace Minesweeper {
 			openbox(start.x, start.y);
 			starttime = nulltime;
 			while(!is_end()) {
-				system("cls");
+				refresh_screen();
 				chco("blue");
 				printf("剩余雷数: %lld\n", boommax - signcnt);
 				chco("");
@@ -159,7 +159,7 @@ namespace Minesweeper {
 				else signbox(nd.x, nd.y);
 				if(starttime == nulltime) starttime = time(0);
 			}
-			system("cls");
+		refresh_screen();
 			printface(gameover ? -1 : 1);
 			printf((space + " ").c_str());
 			chco("green");
@@ -282,7 +282,7 @@ namespace Minesweeper {
 			while(n <= 5 && !Isout) printf("大小必须大于 5。\n棋盘大小: "), n = get();
 			if(Isout) return false;
 			init();
-			system("cls");
+		refresh_screen();
 			chco("blue");
 			printf("剩余雷数: %lld\n", boommax);
 			chco("");
@@ -294,7 +294,7 @@ namespace Minesweeper {
 			openbox(start.x, start.y);
 			starttime = nulltime;
 			while(oboa[tgx][tgy] != 'D' && !gameover) {
-				system("cls");
+				refresh_screen();
 				chco("blue");
 				printf("剩余雷数: %lld\n", boommax - signcnt);
 				chco("");
@@ -306,7 +306,7 @@ namespace Minesweeper {
 				else signbox(nd.x, nd.y);
 				if(starttime == nulltime) starttime = time(0);
 			}
-			system("cls");
+		refresh_screen();
 			printface(gameover ? -1 : 1);
 			printf((space + " ").c_str());
 			chco("green");

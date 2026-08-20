@@ -128,12 +128,10 @@ namespace _2048 {
 	}
 	bool game() {
 		init();
-		printf("欢迎来到 2048 游戏。\n按回车开始...");
-		pause();
 		bool iswin = true, cont = false;
 		LL starttime = nulltime;
 		while(true) {
-			system("cls");
+			refresh_screen();
 			printMP();
 			if(win() && !cont) {
 				cont = 1;
@@ -148,7 +146,7 @@ namespace _2048 {
 			re: char c = getch();
 			if(c == EOF) exit(-1);
 			if(c == '\t') {
-				system("cls");
+				refresh_screen();
 				printf("确定要退出吗？(Y/N)");
 				re2: char is = getch();
 				if(is == EOF) exit(-1);
@@ -161,7 +159,7 @@ namespace _2048 {
 			if(starttime == nulltime) starttime = time(0);
 		}
 		LL endtime = time(0);
-		system("cls");
+		refresh_screen();
 		printf("分数: %lld\n\n", score);
 		for(LL i = 1; i <= 4; i ++, printf("\n")) for(LL j = 1; j <= 4; j ++) if(mp[i][j]) printnumber(mp[i][j]);
 		else chco(0), printf("-    ");

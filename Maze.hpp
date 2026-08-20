@@ -175,16 +175,16 @@ namespace TrapMaze {
 		}
 		if(Isout) return false;
 		string dif_;
-		re1:system("cls");
+		re1:refresh_screen();
 		printf("难度：\n\nA: 简单\nB: 普通\nC: 困难\n\n请选择难度: ");
 		getlstr(dif_);
 		if(dif_ == "/hub") return false;
 		if(dif_.empty()) goto re1;
 		diff = dif_.front();
-		if(tolower(diff) != 'a' && tolower(diff) != 'b' && tolower(diff) != 'c') { system("cls"); goto re1; }
+		if(tolower(diff) != 'a' && tolower(diff) != 'b' && tolower(diff) != 'c') { refresh_screen(); goto re1; }
 		dif = (diff == 'a' ? 0.12 : (diff == 'b' ? 0.20 : 0.30));
 		newtrytime = time(0);
-		system("cls");
+		refresh_screen();
 		printf("正在生成地图...\n");
 		do {
 			again = false, new_maze();
@@ -199,7 +199,7 @@ namespace TrapMaze {
 		for(LL i = -1; i <= 1; i ++) for(LL j = -1; j <= 1; j ++) if(i || j) open[nx + i][ny + j] = 1;
 		LL starttime = nulltime, endtime = 0;
 		while(true) {
-			system("cls");
+			refresh_screen();
 			printf("找到出口 \"E\"。\n生命值: %lld / %lld\n", health, maxhealth);
 			printmaze();
 			printf("移动：W 或 I(上) S 或 K(下) A 或 J(左) D 或 L(右)\n菜单：[TAB]\n");
@@ -207,7 +207,7 @@ namespace TrapMaze {
 			in:char input = getch();
 			if(input == EOF) exit(-1);
 			if(input == '\t') {
-				system("cls");
+				refresh_screen();
 				printf("确定要退出吗(Y/N): ");
 				reask:input = getch();
 				if(input == EOF) exit(-1);
@@ -218,7 +218,7 @@ namespace TrapMaze {
 			if(!move(input)) goto in;
 			if(nx == n && ny == n) {
 				endtime = time(0);
-				system("cls");
+				refresh_screen();
 				printmaze();
 				chco("green");
 				printf("你赢了！\n生命值: %lld", health);
@@ -227,7 +227,7 @@ namespace TrapMaze {
 			}
 			if(health <= 0) {
 				endtime = time(0);
-				system("cls");
+				refresh_screen();
 				printmaze();
 				printf("游戏失败\n按回车返回主菜单...");
 				pause();
