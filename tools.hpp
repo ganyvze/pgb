@@ -114,7 +114,7 @@ set "exe=%~1"
 set "result=%~2"
 set "json=%TEMP%\PGBUpdateCheck_%RANDOM%.json"
 set "remote="
-curl.exe -fsSL -A "PlainGameBox" "https://api.github.com/repos/ganyvze/pgb/releases/latest" -o "%json%" >nul 2>nul
+curl.exe -fsSL -A "PlainGameBox" "https://api.github.com/repos/ganyvze/Plain-Game-Box/releases/latest" -o "%json%" >nul 2>nul
 if errorlevel 1 goto unavailable
 set "PGB_JSON=%json%"
 for %%A in ("%exe%") do set "PGB_ASSET=%%~nxA"
@@ -163,7 +163,7 @@ set "pid=%~2"
 set "json=%TEMP%\PGBUpdateInstall_%RANDOM%.json"
 set "download=%TEMP%\PGBUpdateInstall_%RANDOM%.exe"
 set "updated=0"
-curl.exe -fsSL -A "PlainGameBox" "https://api.github.com/repos/ganyvze/pgb/releases/latest" -o "%json%" >nul 2>nul
+curl.exe -fsSL -A "PlainGameBox" "https://api.github.com/repos/ganyvze/Plain-Game-Box/releases/latest" -o "%json%" >nul 2>nul
 if errorlevel 1 goto cleanup
 set "PGB_JSON=%json%"
 set "PGB_DOWNLOAD=%download%"
